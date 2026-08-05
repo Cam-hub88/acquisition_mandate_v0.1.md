@@ -1,2 +1,5 @@
-# acquisition_mandate_v0.1.md
-# Acquisition Mandate v0.1  ## 1. Long-term vision Describe the type of technology-enabled industrial group we intend to build. 
+# Acquisition Mandate
+
+Working documents for defining and refining our acquisition mandate.
+
+See [`acquisition_mandate_v0.1.md`](./acquisition_mandate_v0.1.md) for the current template.
