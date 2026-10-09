@@ -3,7 +3,7 @@
 **Working name:** KII  
 **Status:** Draft for decision  
 **Date:** 9 October 2026  
-**Purpose:** Say what KII will own, what it will refuse, and the harness a deployment must pass before the group treats the model as installed.
+**Purpose:** Say what KII will own, what it will refuse, and the harness a deployment must pass before the group treats the [codex](./codex.md) as installed.
 
 KII, in this document, is a working name for a technology-enabled industrial group. It is not a registered entity, a ticker, or a description of any listed company. Choices that were inferred for this draft are collected under [Assumptions](#assumptions). Correct those before the mandate is used on a live deal.
 
@@ -25,7 +25,7 @@ The asset is owned operations plus a repeatable installation method. A model tha
 
 Start where a written vocabulary already exists, then move to the adjacent sites that use the same conflict points.
 
-1. **Surface mining — heavy-vehicle and light-vehicle interaction.** Haul roads, intersections, loading pads, and dumps. The public prototype in [Cam-hub88/mine-vehicle-safety-ontology](https://github.com/Cam-hub88/mine-vehicle-safety-ontology) already names the objects, five scenarios (S1–S5), and plain-English IF / AND / THEN rules (R1–R5). That prototype is conceptual. It does not certify compliance, replace site procedures, or make autonomous safety decisions. This mandate uses it as the starting map.
+1. **Surface mining — heavy-vehicle and light-vehicle interaction.** Haul roads, intersections, loading pads, and dumps. The public prototype in [Cam-hub88/mine-vehicle-safety-ontology](https://github.com/Cam-hub88/mine-vehicle-safety-ontology) already names the objects, five scenarios (S1–S5), and plain-English IF / AND / THEN rules (R1–R5). That prototype is conceptual. It does not certify compliance, replace site procedures, or make autonomous safety decisions. This mandate restates it in the [KII codex](./codex.md) and uses that codex as the starting map.
 
 2. **Quarries and bulk-materials sites.** The same vehicle classes and the same conflict points, often with thinner systems and a shorter path to a first corridor.
 
@@ -73,8 +73,8 @@ Before price talk moves past a range, write one page:
 Use these interventions in this order. Each one should be portable to the next site.
 
 1. **Shared vocabulary.** Map the site’s vehicles, operators, road segments, intersections, zones, hazards, controls, and sensors onto the existing object model. Do the mapping with the people who run the shift, in language they can correct.
-2. **Rules the site already believes.** Encode give-way, radio acknowledgement, missing proximity data, and speeding as IF / AND / THEN rules with an accountable role. The site sets and signs the thresholds. The demo figures in the prototype — 40 km/h, 50 metres, under 30 metres — stay illustrative until a site validates its own.
-3. **One picture when evidence conflicts.** When proximity evidence and procedural evidence disagree, use the higher risk class and the more conservative action: hold, stop, or slow down. That principle is already written in the prototype.
+2. **Rules the site already believes.** Install [Book II of the codex](./codex.md#book-ii--rules): give-way, radio acknowledgement, missing proximity data, and speeding, each with an accountable role. The site sets and signs the thresholds. The demo figures in Schedule A — 40 km/h, 50 metres, under 30 metres — stay illustrative until a site validates its own.
+3. **One picture when evidence conflicts.** Apply Article II.0. When proximity evidence and procedural evidence disagree, use the higher risk class and the more conservative action: hold, stop, or slow down.
 4. **AI after the model is stable.** Use it to draft incident narratives, cluster repeated interactions, and propose rule changes for a person to accept. It does not issue a stop instruction.
 5. **Build last, if ever.** Autonomous control, automatic braking, a new sensor product, and a general mining-software platform sit outside this mandate.
 
@@ -105,7 +105,7 @@ Interest and repayment are serviced by the business as it operates today. Ventur
 
 The first proof point is one corridor on one site, and the harness that says the corridor is done.
 
-**Harness.** A deployment passes when all five lines are true, in the site’s own words:
+**Harness.** [Article H of the codex](./codex.md#article-h--harness). A deployment passes when all five lines are true, in the site’s own words:
 
 1. The vehicles, the place, the hazards, the controls, the sensors, and the accountable roles are named, and each name maps to an object in the shared model.
 2. One rule fires, using thresholds the site has signed.
