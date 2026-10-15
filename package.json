@@ -1,0 +1,9 @@
+{
+  "name": "kii-harness",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "harness": "node harness/run.mjs",
+    "test": "node --test harness/evaluate.test.mjs"
+  }
+}
