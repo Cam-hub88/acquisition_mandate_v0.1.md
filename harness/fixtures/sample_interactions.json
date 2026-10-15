@@ -1,0 +1,861 @@
+{
+  "dataset": "Mine vehicle interaction scenarios (synthetic)",
+  "purpose": "Conceptual demonstration only — not live mine data",
+  "consistency_notes": [
+    "All object types match ontology/vehicle_safety_ontology.yaml",
+    "Nested operator and sensors objects are expanded forms of operator_id and sensor_ids",
+    "Every safety_controls string ID is defined in safety_controls_catalog",
+    "Every non-null alert has recommended_action_ids and each action has assigned_role",
+    "All numeric thresholds are illustrative and require site SME validation"
+  ],
+  "illustrative_thresholds": {
+    "disclaimer": "ILLUSTRATIVE ONLY — require operational SME validation before real-site use.",
+    "haul_corridor_speed_limit_kmh": 40,
+    "missing_proximity_caution_distance_metres": 50,
+    "critical_closing_distance_metres": 30,
+    "acknowledgement_window": "site_defined; treated as timed-out in S4"
+  },
+  "site": {
+    "id": "SITE-DEMO-01",
+    "name": "North Ridge Open Pit (Demonstration)",
+    "shift_context": "mixed day and night examples"
+  },
+  "safety_controls_catalog": [
+    {
+      "id": "give_way_to_heavy_vehicle",
+      "type": "SafetyControl",
+      "name": "Light vehicles give way to heavy vehicles",
+      "control_type": "give_way",
+      "mandatory": true,
+      "priority": "critical"
+    },
+    {
+      "id": "speed_limit_haul_40",
+      "type": "SafetyControl",
+      "name": "Haul corridor speed limit",
+      "control_type": "speed_limit",
+      "mandatory": true,
+      "priority": "required",
+      "illustrative_limit_kmh": 40,
+      "threshold_note": "Illustrative only — requires site SME validation"
+    },
+    {
+      "id": "radio_acknowledgement_at_intersection",
+      "type": "SafetyControl",
+      "name": "Radio acknowledgement at designated intersections",
+      "control_type": "acknowledgement",
+      "mandatory": true,
+      "priority": "critical"
+    },
+    {
+      "id": "hold_if_unacknowledged",
+      "type": "SafetyControl",
+      "name": "Hold before intersection if acknowledgement not received",
+      "control_type": "hold_requirement",
+      "mandatory": true,
+      "priority": "critical"
+    },
+    {
+      "id": "no_overtaking_on_haul_without_clearance",
+      "type": "SafetyControl",
+      "name": "No overtaking on haul without clearance",
+      "control_type": "no_overtaking",
+      "mandatory": true,
+      "priority": "required"
+    },
+    {
+      "id": "authorised_access_loading_pad",
+      "type": "SafetyControl",
+      "name": "Authorised access only to loading pad",
+      "control_type": "authorised_access",
+      "mandatory": true,
+      "priority": "required"
+    },
+    {
+      "id": "sensor_degradation_caution",
+      "type": "SafetyControl",
+      "name": "Caution and investigation when proximity data missing",
+      "control_type": "sensor_caution",
+      "mandatory": true,
+      "priority": "required"
+    },
+    {
+      "id": "immediate_stop_when_critical",
+      "type": "SafetyControl",
+      "name": "Immediate stop or hold when interaction is critical",
+      "control_type": "immediate_stop",
+      "mandatory": true,
+      "priority": "critical"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "S1",
+      "title": "Normal safe interaction at a controlled intersection",
+      "scenario_type": "normal_safe_interaction",
+      "rule_id": "R1",
+      "summary": "A haul truck and a light vehicle approach a controlled crossroads. Speeds are within limits, radio acknowledgement is complete, the light vehicle is holding and giving way, and proximity sensors are online.",
+      "risk_level": "low",
+      "timestamp": "2026-07-30T09:05:12Z",
+      "location": {
+        "id": "IX-CTRL-02",
+        "type": "Intersection",
+        "name": "Controlled Crossroads — Main Gate Approach",
+        "intersection_type": "crossroads",
+        "visibility": "good",
+        "acknowledgement_required": true
+      },
+      "participants": [
+        {
+          "id": "HV-HT-04",
+          "type": "HeavyVehicle",
+          "name": "Haul Truck 4",
+          "vehicle_class": "haul_truck",
+          "mass_tonnes": 275,
+          "current_speed_kmh": 30,
+          "load_state": "loaded",
+          "proximity_data_status": "available",
+          "location_id": "IX-CTRL-02",
+          "operator_id": "OP-055",
+          "sensor_ids": ["SN-HV-04-P"],
+          "operator": {
+            "id": "OP-055",
+            "type": "Operator",
+            "name": "R. Silva",
+            "role": "haul_driver",
+            "radio_call_sign": "Haul-4"
+          },
+          "sensors": [
+            {
+              "id": "SN-HV-04-P",
+              "type": "Sensor",
+              "sensor_type": "proximity_radar",
+              "mounted_on_id": "HV-HT-04",
+              "status": "online",
+              "last_distance_metres": 70
+            }
+          ]
+        },
+        {
+          "id": "LV-02",
+          "type": "LightVehicle",
+          "name": "Light Vehicle 2",
+          "vehicle_class": "supervisor_vehicle",
+          "mass_tonnes": 2.6,
+          "current_speed_kmh": 0,
+          "location_id": "IX-CTRL-02",
+          "operator_id": "OP-402",
+          "sensor_ids": ["SN-LV-02-U"],
+          "operator": {
+            "id": "OP-402",
+            "type": "Operator",
+            "name": "K. Ndlovu",
+            "role": "light_vehicle_driver",
+            "radio_call_sign": "LV-2"
+          },
+          "sensors": [
+            {
+              "id": "SN-LV-02-U",
+              "type": "Sensor",
+              "sensor_type": "proximity_uwb",
+              "mounted_on_id": "LV-02",
+              "status": "online",
+              "last_distance_metres": 70
+            }
+          ]
+        }
+      ],
+      "hazards": [],
+      "safety_controls": [
+        "give_way_to_heavy_vehicle",
+        "speed_limit_haul_40",
+        "radio_acknowledgement_at_intersection"
+      ],
+      "control_compliance": {
+        "give_way_to_heavy_vehicle": "compliant",
+        "speed_limit_haul_40": "compliant",
+        "radio_acknowledgement_at_intersection": "acknowledged"
+      },
+      "interaction_event": {
+        "id": "IE-1001",
+        "type": "InteractionEvent",
+        "participant_ids": ["HV-HT-04", "LV-02"],
+        "location_id": "IX-CTRL-02",
+        "distance_metres": 70,
+        "closing_speed_kmh": 30,
+        "sensor_ids": ["SN-HV-04-P", "SN-LV-02-U"],
+        "control_ids": [
+          "give_way_to_heavy_vehicle",
+          "speed_limit_haul_40",
+          "radio_acknowledgement_at_intersection"
+        ],
+        "risk_level": "low",
+        "rule_id": "R1",
+        "status": "resolved",
+        "alert_id": null
+      },
+      "alert": null,
+      "recommended_actions": [],
+      "accountable_role_if_action_needed": "light_vehicle_driver"
+    },
+    {
+      "id": "S2",
+      "title": "Speeding light vehicle on a haul road",
+      "scenario_type": "speeding_light_vehicle",
+      "rule_id": "R2",
+      "summary": "A light vehicle is travelling above the haul-corridor speed limit while a loaded haul truck is ahead on the same road segment. Separation is still moderate, but the speeding creates elevated risk.",
+      "risk_level": "medium",
+      "timestamp": "2026-07-30T10:18:44Z",
+      "location": {
+        "id": "RS-HAUL-A",
+        "type": "RoadSegment",
+        "name": "Haul Road A — Pit to Crusher",
+        "road_type": "haul_road",
+        "design_speed_kmh": 40,
+        "design_speed_note": "Illustrative threshold — requires site SME validation",
+        "surface_condition": "good"
+      },
+      "participants": [
+        {
+          "id": "HV-HT-12",
+          "type": "HeavyVehicle",
+          "name": "Haul Truck 12",
+          "vehicle_class": "haul_truck",
+          "mass_tonnes": 280,
+          "current_speed_kmh": 38,
+          "load_state": "loaded",
+          "proximity_data_status": "available",
+          "location_id": "RS-HAUL-A",
+          "operator_id": "OP-101",
+          "sensor_ids": ["SN-HV-12-P"],
+          "operator": {
+            "id": "OP-101",
+            "type": "Operator",
+            "name": "A. Mensah",
+            "role": "haul_driver",
+            "radio_call_sign": "Haul-12"
+          },
+          "sensors": [
+            {
+              "id": "SN-HV-12-P",
+              "type": "Sensor",
+              "sensor_type": "proximity_radar",
+              "mounted_on_id": "HV-HT-12",
+              "status": "online",
+              "last_distance_metres": 85
+            }
+          ]
+        },
+        {
+          "id": "LV-07",
+          "type": "LightVehicle",
+          "name": "Light Vehicle 7",
+          "vehicle_class": "pickup",
+          "mass_tonnes": 2.8,
+          "current_speed_kmh": 52,
+          "location_id": "RS-HAUL-A",
+          "operator_id": "OP-214",
+          "sensor_ids": ["SN-LV-07-U"],
+          "operator": {
+            "id": "OP-214",
+            "type": "Operator",
+            "name": "J. Okonkwo",
+            "role": "light_vehicle_driver",
+            "radio_call_sign": "LV-7"
+          },
+          "sensors": [
+            {
+              "id": "SN-LV-07-U",
+              "type": "Sensor",
+              "sensor_type": "proximity_uwb",
+              "mounted_on_id": "LV-07",
+              "status": "online",
+              "last_distance_metres": 85
+            }
+          ]
+        }
+      ],
+      "hazards": [],
+      "safety_controls": [
+        "speed_limit_haul_40",
+        "give_way_to_heavy_vehicle",
+        "no_overtaking_on_haul_without_clearance"
+      ],
+      "control_compliance": {
+        "speed_limit_haul_40": "breached_by_LV-07",
+        "give_way_to_heavy_vehicle": "uncertain",
+        "no_overtaking_on_haul_without_clearance": "at_risk"
+      },
+      "interaction_event": {
+        "id": "IE-1002",
+        "type": "InteractionEvent",
+        "participant_ids": ["HV-HT-12", "LV-07"],
+        "location_id": "RS-HAUL-A",
+        "distance_metres": 85,
+        "closing_speed_kmh": 14,
+        "sensor_ids": ["SN-HV-12-P", "SN-LV-07-U"],
+        "control_ids": [
+          "speed_limit_haul_40",
+          "give_way_to_heavy_vehicle",
+          "no_overtaking_on_haul_without_clearance"
+        ],
+        "risk_level": "medium",
+        "rule_id": "R2",
+        "status": "alerted",
+        "alert_id": "AL-2002"
+      },
+      "alert": {
+        "id": "AL-2002",
+        "type": "Alert",
+        "event_id": "IE-1002",
+        "severity": "warning",
+        "message": "Light Vehicle 7 is travelling at 52 km/h on Haul Road A (illustrative limit 40 km/h) behind Haul Truck 12. Reduce speed and maintain separation.",
+        "recipient_roles": ["light_vehicle_driver", "control_room"],
+        "raised_at": "2026-07-30T10:18:44Z",
+        "acknowledgement_status": "pending",
+        "recommended_action_ids": ["OA-3002"],
+        "status": "open"
+      },
+      "recommended_actions": [
+        {
+          "id": "OA-3002",
+          "type": "OperationalAction",
+          "action_type": "slow_down",
+          "instruction": "LV-7: Reduce speed to the haul limit (illustrative 40 km/h) or below and do not attempt to overtake Haul-12.",
+          "alert_id": "AL-2002",
+          "assigned_role": "light_vehicle_driver",
+          "assigned_operator_id": "OP-214",
+          "priority": "high",
+          "status": "recommended"
+        }
+      ]
+    },
+    {
+      "id": "S3",
+      "title": "Heavy vehicle with missing proximity data",
+      "scenario_type": "heavy_vehicle_missing_proximity_data",
+      "rule_id": "R3",
+      "summary": "A dozer is working near a light vehicle in the loading zone, but the dozer proximity sensor is offline and no recent proximity reading is available. Visibility is otherwise acceptable.",
+      "risk_level": "medium",
+      "timestamp": "2026-07-30T11:33:09Z",
+      "location": {
+        "id": "ZONE-LOAD-01",
+        "type": "OperatingZone",
+        "name": "East Pit Loading Pad",
+        "zone_type": "loading",
+        "access_level": "authorised_only"
+      },
+      "participants": [
+        {
+          "id": "HV-DZ-03",
+          "type": "HeavyVehicle",
+          "name": "Dozer 3",
+          "vehicle_class": "dozer",
+          "mass_tonnes": 55,
+          "current_speed_kmh": 6,
+          "load_state": "not_applicable",
+          "proximity_data_status": "missing",
+          "location_id": "ZONE-LOAD-01",
+          "operator_id": "OP-088",
+          "sensor_ids": ["SN-DZ-03-P"],
+          "operator": {
+            "id": "OP-088",
+            "type": "Operator",
+            "name": "S. Patel",
+            "role": "dozer_operator",
+            "radio_call_sign": "Dozer-3"
+          },
+          "sensors": [
+            {
+              "id": "SN-DZ-03-P",
+              "type": "Sensor",
+              "sensor_type": "proximity_radar",
+              "mounted_on_id": "HV-DZ-03",
+              "status": "offline",
+              "last_distance_metres": null,
+              "last_reading_at": "2026-07-30T10:51:02Z"
+            }
+          ]
+        },
+        {
+          "id": "LV-15",
+          "type": "LightVehicle",
+          "name": "Light Vehicle 15",
+          "vehicle_class": "service_ute",
+          "mass_tonnes": 3.1,
+          "current_speed_kmh": 10,
+          "location_id": "ZONE-LOAD-01",
+          "operator_id": "OP-301",
+          "sensor_ids": ["SN-LV-15-U"],
+          "operator": {
+            "id": "OP-301",
+            "type": "Operator",
+            "name": "M. Chen",
+            "role": "light_vehicle_driver",
+            "radio_call_sign": "LV-15"
+          },
+          "sensors": [
+            {
+              "id": "SN-LV-15-U",
+              "type": "Sensor",
+              "sensor_type": "proximity_uwb",
+              "mounted_on_id": "LV-15",
+              "status": "online",
+              "last_distance_metres": 35
+            }
+          ]
+        }
+      ],
+      "hazards": [
+        {
+          "id": "HZ-SENSOR-01",
+          "type": "Hazard",
+          "hazard_type": "sensor_loss",
+          "name": "Dozer proximity data missing",
+          "severity": "medium",
+          "status": "active",
+          "affects_id": "ZONE-LOAD-01"
+        }
+      ],
+      "safety_controls": [
+        "give_way_to_heavy_vehicle",
+        "authorised_access_loading_pad",
+        "sensor_degradation_caution"
+      ],
+      "control_compliance": {
+        "give_way_to_heavy_vehicle": "compliant",
+        "authorised_access_loading_pad": "compliant",
+        "sensor_degradation_caution": "triggered"
+      },
+      "interaction_event": {
+        "id": "IE-1003",
+        "type": "InteractionEvent",
+        "participant_ids": ["HV-DZ-03", "LV-15"],
+        "location_id": "ZONE-LOAD-01",
+        "distance_metres": 35,
+        "closing_speed_kmh": 8,
+        "hazard_ids": ["HZ-SENSOR-01"],
+        "sensor_ids": ["SN-DZ-03-P", "SN-LV-15-U"],
+        "control_ids": [
+          "give_way_to_heavy_vehicle",
+          "authorised_access_loading_pad",
+          "sensor_degradation_caution"
+        ],
+        "risk_level": "medium",
+        "rule_id": "R3",
+        "status": "alerted",
+        "alert_id": "AL-2003",
+        "notes": "Distance estimated from light-vehicle sensor only; heavy-vehicle proximity feed missing. 35 m is inside the illustrative 50 m caution distance."
+      },
+      "alert": {
+        "id": "AL-2003",
+        "type": "Alert",
+        "event_id": "IE-1003",
+        "severity": "warning",
+        "message": "Dozer 3 proximity sensor is offline while Light Vehicle 15 is nearby in East Pit Loading Pad. Treat as reduced awareness — hold clear and investigate sensor.",
+        "recipient_roles": ["light_vehicle_driver", "heavy_vehicle_driver", "control_room"],
+        "raised_at": "2026-07-30T11:33:09Z",
+        "acknowledgement_status": "pending",
+        "recommended_action_ids": ["OA-3003A", "OA-3003B", "OA-3003C"],
+        "status": "open"
+      },
+      "recommended_actions": [
+        {
+          "id": "OA-3003A",
+          "type": "OperationalAction",
+          "action_type": "hold_position",
+          "instruction": "LV-15: Hold clear of Dozer 3 working path until radio confirmation is received.",
+          "alert_id": "AL-2003",
+          "assigned_role": "light_vehicle_driver",
+          "assigned_operator_id": "OP-301",
+          "priority": "high",
+          "status": "recommended"
+        },
+        {
+          "id": "OA-3003B",
+          "type": "OperationalAction",
+          "action_type": "radio_call",
+          "instruction": "Dozer-3: Confirm by radio that you are aware of LV-15 before continuing close-proximity work.",
+          "alert_id": "AL-2003",
+          "assigned_role": "heavy_vehicle_driver",
+          "assigned_operator_id": "OP-088",
+          "priority": "high",
+          "status": "recommended"
+        },
+        {
+          "id": "OA-3003C",
+          "type": "OperationalAction",
+          "action_type": "investigate_sensor",
+          "instruction": "Control room: Investigate Dozer 3 proximity sensor offline status before continued close-proximity work.",
+          "alert_id": "AL-2003",
+          "assigned_role": "control_room",
+          "assigned_operator_id": null,
+          "priority": "high",
+          "status": "recommended"
+        }
+      ]
+    },
+    {
+      "id": "S4",
+      "title": "Unacknowledged intersection interaction",
+      "scenario_type": "unacknowledged_intersection_interaction",
+      "rule_id": "R4",
+      "summary": "A light vehicle approaches Blind Spot Junction where radio acknowledgement is mandatory. A haul truck is also approaching. The light vehicle has transmitted a call, but no acknowledgement has been received within the required window.",
+      "risk_level": "high",
+      "timestamp": "2026-07-30T14:07:21Z",
+      "location": {
+        "id": "IX-BLIND-01",
+        "type": "Intersection",
+        "name": "Blind Spot Junction — Haul A / Access B",
+        "intersection_type": "T_junction",
+        "visibility": "limited",
+        "acknowledgement_required": true
+      },
+      "participants": [
+        {
+          "id": "HV-HT-12",
+          "type": "HeavyVehicle",
+          "name": "Haul Truck 12",
+          "vehicle_class": "haul_truck",
+          "mass_tonnes": 280,
+          "current_speed_kmh": 36,
+          "load_state": "loaded",
+          "proximity_data_status": "available",
+          "location_id": "IX-BLIND-01",
+          "operator_id": "OP-101",
+          "sensor_ids": ["SN-HV-12-P"],
+          "operator": {
+            "id": "OP-101",
+            "type": "Operator",
+            "name": "A. Mensah",
+            "role": "haul_driver",
+            "radio_call_sign": "Haul-12"
+          },
+          "sensors": [
+            {
+              "id": "SN-HV-12-P",
+              "type": "Sensor",
+              "sensor_type": "proximity_radar",
+              "mounted_on_id": "HV-HT-12",
+              "status": "online",
+              "last_distance_metres": 55
+            }
+          ]
+        },
+        {
+          "id": "LV-07",
+          "type": "LightVehicle",
+          "name": "Light Vehicle 7",
+          "vehicle_class": "pickup",
+          "mass_tonnes": 2.8,
+          "current_speed_kmh": 22,
+          "location_id": "IX-BLIND-01",
+          "operator_id": "OP-214",
+          "sensor_ids": ["SN-LV-07-U"],
+          "operator": {
+            "id": "OP-214",
+            "type": "Operator",
+            "name": "J. Okonkwo",
+            "role": "light_vehicle_driver",
+            "radio_call_sign": "LV-7"
+          },
+          "sensors": [
+            {
+              "id": "SN-LV-07-U",
+              "type": "Sensor",
+              "sensor_type": "proximity_uwb",
+              "mounted_on_id": "LV-07",
+              "status": "online",
+              "last_distance_metres": 55
+            }
+          ]
+        }
+      ],
+      "hazards": [
+        {
+          "id": "HZ-BLIND-01",
+          "type": "Hazard",
+          "hazard_type": "blind_spot",
+          "name": "Terrain blind corner at Access B entry",
+          "severity": "high",
+          "status": "active",
+          "affects_id": "IX-BLIND-01"
+        }
+      ],
+      "safety_controls": [
+        "give_way_to_heavy_vehicle",
+        "radio_acknowledgement_at_intersection",
+        "hold_if_unacknowledged"
+      ],
+      "control_compliance": {
+        "give_way_to_heavy_vehicle": "uncertain",
+        "radio_acknowledgement_at_intersection": "call_sent_unacknowledged",
+        "hold_if_unacknowledged": "not_yet_applied"
+      },
+      "interaction_event": {
+        "id": "IE-1004",
+        "type": "InteractionEvent",
+        "participant_ids": ["HV-HT-12", "LV-07"],
+        "location_id": "IX-BLIND-01",
+        "distance_metres": 55,
+        "closing_speed_kmh": 40,
+        "hazard_ids": ["HZ-BLIND-01"],
+        "sensor_ids": ["SN-HV-12-P", "SN-LV-07-U"],
+        "control_ids": [
+          "give_way_to_heavy_vehicle",
+          "radio_acknowledgement_at_intersection",
+          "hold_if_unacknowledged"
+        ],
+        "risk_level": "high",
+        "rule_id": "R4",
+        "status": "alerted",
+        "alert_id": "AL-2004"
+      },
+      "alert": {
+        "id": "AL-2004",
+        "type": "Alert",
+        "event_id": "IE-1004",
+        "severity": "urgent",
+        "message": "Unacknowledged intersection interaction at Blind Spot Junction: LV-7 call not acknowledged while Haul Truck 12 is approaching. Hold before entering.",
+        "recipient_roles": ["light_vehicle_driver", "heavy_vehicle_driver", "control_room"],
+        "raised_at": "2026-07-30T14:07:21Z",
+        "acknowledgement_status": "unacknowledged_timeout",
+        "recommended_action_ids": ["OA-3004A", "OA-3004B", "OA-3004C"],
+        "status": "open"
+      },
+      "recommended_actions": [
+        {
+          "id": "OA-3004A",
+          "type": "OperationalAction",
+          "action_type": "hold_position",
+          "instruction": "LV-7: Hold before Blind Spot Junction. Do not enter until acknowledgement is received and Haul-12 is clear.",
+          "alert_id": "AL-2004",
+          "assigned_role": "light_vehicle_driver",
+          "assigned_operator_id": "OP-214",
+          "priority": "immediate",
+          "status": "recommended"
+        },
+        {
+          "id": "OA-3004B",
+          "type": "OperationalAction",
+          "action_type": "acknowledge",
+          "instruction": "Haul-12: Acknowledge LV-7 and confirm junction status.",
+          "alert_id": "AL-2004",
+          "assigned_role": "heavy_vehicle_driver",
+          "assigned_operator_id": "OP-101",
+          "priority": "immediate",
+          "status": "recommended"
+        },
+        {
+          "id": "OA-3004C",
+          "type": "OperationalAction",
+          "action_type": "acknowledge",
+          "instruction": "Control room: Secure acknowledgement between LV-7 and Haul-12 and confirm hold before entry.",
+          "alert_id": "AL-2004",
+          "assigned_role": "control_room",
+          "assigned_operator_id": null,
+          "priority": "immediate",
+          "status": "recommended"
+        }
+      ]
+    },
+    {
+      "id": "S5",
+      "title": "High-risk interaction requiring immediate intervention",
+      "scenario_type": "high_risk_immediate_intervention",
+      "rule_id": "R5",
+      "summary": "A loaded haul truck and a light vehicle are closing rapidly at Blind Spot Junction under dust and poor visibility. Proximity data shows short separation, the light vehicle has not completed radio acknowledgement, and immediate intervention is required.",
+      "risk_level": "critical",
+      "timestamp": "2026-07-30T15:22:47Z",
+      "location": {
+        "id": "IX-BLIND-01",
+        "type": "Intersection",
+        "name": "Blind Spot Junction — Haul A / Access B",
+        "intersection_type": "T_junction",
+        "visibility": "poor",
+        "acknowledgement_required": true
+      },
+      "participants": [
+        {
+          "id": "HV-HT-12",
+          "type": "HeavyVehicle",
+          "name": "Haul Truck 12",
+          "vehicle_class": "haul_truck",
+          "mass_tonnes": 280,
+          "current_speed_kmh": 38,
+          "load_state": "loaded",
+          "proximity_data_status": "available",
+          "location_id": "IX-BLIND-01",
+          "operator_id": "OP-101",
+          "sensor_ids": ["SN-HV-12-P"],
+          "operator": {
+            "id": "OP-101",
+            "type": "Operator",
+            "name": "A. Mensah",
+            "role": "haul_driver",
+            "radio_call_sign": "Haul-12"
+          },
+          "sensors": [
+            {
+              "id": "SN-HV-12-P",
+              "type": "Sensor",
+              "sensor_type": "proximity_radar",
+              "mounted_on_id": "HV-HT-12",
+              "status": "online",
+              "last_distance_metres": 28
+            }
+          ]
+        },
+        {
+          "id": "LV-07",
+          "type": "LightVehicle",
+          "name": "Light Vehicle 7",
+          "vehicle_class": "pickup",
+          "mass_tonnes": 2.8,
+          "current_speed_kmh": 26,
+          "location_id": "IX-BLIND-01",
+          "operator_id": "OP-214",
+          "sensor_ids": ["SN-LV-07-U"],
+          "operator": {
+            "id": "OP-214",
+            "type": "Operator",
+            "name": "J. Okonkwo",
+            "role": "light_vehicle_driver",
+            "radio_call_sign": "LV-7"
+          },
+          "sensors": [
+            {
+              "id": "SN-LV-07-U",
+              "type": "Sensor",
+              "sensor_type": "proximity_uwb",
+              "mounted_on_id": "LV-07",
+              "status": "online",
+              "last_distance_metres": 28
+            }
+          ]
+        }
+      ],
+      "hazards": [
+        {
+          "id": "HZ-DUST-01",
+          "type": "Hazard",
+          "hazard_type": "dust",
+          "name": "Haul road dust plume",
+          "severity": "high",
+          "status": "active",
+          "affects_id": "IX-BLIND-01"
+        },
+        {
+          "id": "HZ-BLIND-01",
+          "type": "Hazard",
+          "hazard_type": "blind_spot",
+          "name": "Terrain blind corner at Access B entry",
+          "severity": "high",
+          "status": "active",
+          "affects_id": "IX-BLIND-01"
+        }
+      ],
+      "safety_controls": [
+        "give_way_to_heavy_vehicle",
+        "radio_acknowledgement_at_intersection",
+        "hold_if_unacknowledged",
+        "immediate_stop_when_critical"
+      ],
+      "control_compliance": {
+        "give_way_to_heavy_vehicle": "not_complied",
+        "radio_acknowledgement_at_intersection": "not_complied",
+        "hold_if_unacknowledged": "not_complied",
+        "immediate_stop_when_critical": "required_now"
+      },
+      "interaction_event": {
+        "id": "IE-1005",
+        "type": "InteractionEvent",
+        "participant_ids": ["HV-HT-12", "LV-07"],
+        "location_id": "IX-BLIND-01",
+        "distance_metres": 28,
+        "closing_speed_kmh": 48,
+        "hazard_ids": ["HZ-DUST-01", "HZ-BLIND-01"],
+        "sensor_ids": ["SN-HV-12-P", "SN-LV-07-U"],
+        "control_ids": [
+          "give_way_to_heavy_vehicle",
+          "radio_acknowledgement_at_intersection",
+          "hold_if_unacknowledged",
+          "immediate_stop_when_critical"
+        ],
+        "risk_level": "critical",
+        "rule_id": "R5",
+        "status": "alerted",
+        "alert_id": "AL-2005",
+        "threshold_note": "28 m is under the illustrative critical closing distance of 30 m — requires site SME validation"
+      },
+      "alert": {
+        "id": "AL-2005",
+        "type": "Alert",
+        "event_id": "IE-1005",
+        "severity": "critical",
+        "message": "CRITICAL: Haul Truck 12 and Light Vehicle 7 closing at ~28 m at Blind Spot Junction under dust and poor visibility. Radio acknowledgement missing. Immediate hold/stop required.",
+        "recipient_roles": ["light_vehicle_driver", "heavy_vehicle_driver", "control_room"],
+        "raised_at": "2026-07-30T15:22:47Z",
+        "acknowledgement_status": "pending",
+        "recommended_action_ids": ["OA-3005A", "OA-3005B", "OA-3005C"],
+        "status": "open"
+      },
+      "recommended_actions": [
+        {
+          "id": "OA-3005A",
+          "type": "OperationalAction",
+          "action_type": "stop",
+          "instruction": "LV-7: STOP immediately clear of the haul path. Do not enter the junction.",
+          "alert_id": "AL-2005",
+          "assigned_role": "light_vehicle_driver",
+          "assigned_operator_id": "OP-214",
+          "priority": "immediate",
+          "status": "recommended",
+          "audit_record_id": "AUD-9005"
+        },
+        {
+          "id": "OA-3005B",
+          "type": "OperationalAction",
+          "action_type": "slow_down",
+          "instruction": "Haul-12: Reduce speed now and prepare to hold if the junction is not confirmed clear.",
+          "alert_id": "AL-2005",
+          "assigned_role": "heavy_vehicle_driver",
+          "assigned_operator_id": "OP-101",
+          "priority": "immediate",
+          "status": "recommended",
+          "audit_record_id": "AUD-9005"
+        },
+        {
+          "id": "OA-3005C",
+          "type": "OperationalAction",
+          "action_type": "radio_call",
+          "instruction": "Control room: Broadcast junction hold, confirm both operators have received the critical alert, and keep the event open until separation is restored.",
+          "alert_id": "AL-2005",
+          "assigned_role": "control_room",
+          "assigned_operator_id": null,
+          "priority": "immediate",
+          "status": "recommended",
+          "audit_record_id": "AUD-9005"
+        }
+      ],
+      "audit_record": {
+        "id": "AUD-9005",
+        "type": "AuditRecord",
+        "event_id": "IE-1005",
+        "alert_id": "AL-2005",
+        "rule_id": "R5",
+        "recommendation_summary": "LV-7 stop; Haul-12 slow/hold; control room broadcast and verify",
+        "human_decision": "Recommendations accepted by LV-7, Haul-12 and control room",
+        "decided_by_role": [
+          "light_vehicle_driver",
+          "heavy_vehicle_driver",
+          "control_room"
+        ],
+        "decided_by_operator_ids": ["OP-214", "OP-101"],
+        "decided_at": "2026-07-30T15:23:05Z",
+        "outcome": "Separation restored; alert closed; no collision / near-miss escalation",
+        "follow_up": "Coaching on radio acknowledgement before blind junctions; dust suppression check at IX-BLIND-01"
+      }
+    }
+  ]
+}
